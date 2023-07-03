@@ -1,10 +1,11 @@
-from sqlalchemy import select, text
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from config import settings
 from data import NikeDataset
 from database.engine import connect
 from database.ingress import import_product
+from database.query import similarity_search
 from database.tables import Products, create_tables
 from embeddings.engine import EmbeddingEngine
 
@@ -29,13 +30,7 @@ if __name__ == "__main__":
     # import_product(nd, conn)
 
     query_embedding = embed.get_embedding(SEARCH_TEXT)
-    statement = (
-        select(Products, Products.embedding.l2_distance(query_embedding))
-        .order_by(Products.embedding.l2_distance(query_embedding))
-        .limit(5)
-    )
-    with Session(bind=conn) as session:
-        results = session.execute(statement).all()
+    results = similarity_search(conn, query_embedding)
 
     for item, distance in results:
         print(f"TITLE: {item.name}")
