@@ -11,6 +11,8 @@ kaggle = "1.5.13"
 pandas = "2.0.2"
 dynaconf = "3.1.12"
 sqlalchemy = "2.0.17"
+fastapi = "0.98.0"
+pydantic = "1.10.10"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -26,3 +28,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.isort]
 profile="black"
+
+[tool.mypy]
+python_version = "3.11"

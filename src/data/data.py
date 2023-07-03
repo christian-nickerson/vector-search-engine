@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import Dict, List
 
 import kaggle
 import pandas as pd
@@ -18,7 +19,8 @@ class NikeDataset:
         """Download and parse in Nike Dataset"""
         if not os.path.isfile(DATA_FULLPATH):  # download if not exists
             self._download_data()
-        self._df = pd.read_csv(DATA_FULLPATH)
+        self._df: pd.DataFrame = pd.read_csv(DATA_FULLPATH)
+        self._df = self._df.drop(["index"], axis=1)
 
     @staticmethod
     def _download_data() -> None:
@@ -32,3 +34,11 @@ class NikeDataset:
     @property
     def df(self) -> pd.DataFrame:
         return self._df
+
+    @property
+    def column_types(self) -> List[Dict[str, str]]:
+        """get column types data"""
+        column_types = []
+        for col, type in zip(self._df.columns, self._df.dtypes):
+            column_types.append({"column_name": col, "column_type": type.name})
+        return column_types
