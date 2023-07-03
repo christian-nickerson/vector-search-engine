@@ -1,6 +1,3 @@
-from sqlalchemy import select
-from sqlalchemy.orm import Session
-
 from config import settings
 from data import NikeDataset
 from database.engine import connect
