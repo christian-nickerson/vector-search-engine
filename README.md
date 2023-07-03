@@ -1,3 +1,3 @@
-# AI Search Engine
+# Vector Search Engine
 
-An AI powered search engine for searching for similar content
+A vector search engine project that uses NLP to query Nike product descriptions in place of a traditional keyword search engine.

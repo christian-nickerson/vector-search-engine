@@ -1,15 +1,19 @@
 [tool.poetry]
 name = "vector-search-engine"
 version = "0.1.0"
-description = "An AI powered vector search engine for finding similar content"
+description = "A vector search engine for searching for Nike products using natural language"
 authors = ["christian nickerson <christian_nickerson@hotmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "3.11"
-kaggle = "^1.5.13"
-pandas = "^2.0.2"
-dynaconf = "^3.1.12"
+kaggle = "1.5.13"
+pandas = "2.0.2"
+dynaconf = "3.1.12"
+sqlalchemy = "2.0.17"
+fastapi = "0.98.0"
+pydantic = "1.10.10"
+psycopg2-binary = "2.9.6"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -25,3 +29,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.isort]
 profile="black"
+
+[tool.mypy]
+python_version = "3.11"

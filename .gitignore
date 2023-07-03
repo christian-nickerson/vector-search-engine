@@ -1,11 +1,12 @@
 # repo files
 *.csv
+*.vscode
 
 # python files
 *__pycache__
 
 # linting files
-.mypy_cache
+*.mypy_cache
 
 # Ignore dynaconf secret files
-.secrets.*
+*.secrets.*
