@@ -1,14 +1,14 @@
 import os
 from pathlib import Path
-from typing import Dict, List
+from uuid import UUID
 
 import kaggle
 import pandas as pd
 
 from config import settings
 
-DATA_PATH = "src/data/"
-DATA_FULLPATH = Path(f"{DATA_PATH}nike_data_2022_09.csv")
+DATA_PATH = Path("src/data")
+DATA_FULLPATH = Path.joinpath(DATA_PATH, "nike_data_2022_09.csv")
 
 
 class NikeDataset:
@@ -21,6 +21,8 @@ class NikeDataset:
             self._download_data()
         self._df: pd.DataFrame = pd.read_csv(DATA_FULLPATH)
         self._df = self._df.drop(["index"], axis=1)
+        self._df["uniq_id"] = self._uuid_conversion(self._df["uniq_id"])
+        self._df["scraped_at"] = self._datetime_conversion(self._df["scraped_at"])
 
     @staticmethod
     def _download_data() -> None:
@@ -35,10 +37,12 @@ class NikeDataset:
     def df(self) -> pd.DataFrame:
         return self._df
 
-    @property
-    def column_types(self) -> List[Dict[str, str]]:
-        """get column types data"""
-        column_types = []
-        for col, type in zip(self._df.columns, self._df.dtypes):
-            column_types.append({"column_name": col, "column_type": type.name})
-        return column_types
+    @staticmethod
+    def _uuid_conversion(df: pd.Series) -> pd.Series:
+        """convert a pandas series from object to uuids"""
+        return df.apply(lambda x: UUID(x))
+
+    @staticmethod
+    def _datetime_conversion(df: pd.Series) -> pd.Series:
+        """convert a pandas series from object to uuids"""
+        return pd.to_datetime(df)

@@ -1,2 +1,15 @@
-[data]
+[development.data]
 dataset_name = "thedevastator/nike-usa-products-prices-descriptions-and-custom"
+
+[development.db]
+host = "localhost"
+port = 5432
+database = "vector-db"
+
+[compose.data]
+dataset_name = "thedevastator/nike-usa-products-prices-descriptions-and-custom"
+
+[compose.db]
+host = "vector-db"
+port = 5432
+database = "vector-db"
