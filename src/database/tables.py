@@ -2,6 +2,7 @@ from datetime import datetime
 from decimal import Decimal
 from uuid import UUID
 
+from pgvector.sqlalchemy import Vector
 from sqlalchemy import Engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
@@ -17,6 +18,7 @@ class Products(Base):
     __tablename__: str = "products"
 
     uniq_id: Mapped[UUID] = mapped_column(primary_key=True)
+    embedding: Mapped[Vector] = mapped_column(Vector, index=True)
     url: Mapped[str]
     name: Mapped[str]
     sub_title: Mapped[str]

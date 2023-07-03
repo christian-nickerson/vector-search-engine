@@ -1,11 +1,13 @@
 import os
 from pathlib import Path
+from typing import List
 from uuid import UUID
 
 import kaggle
 import pandas as pd
 
 from config import settings
+from embeddings.engine import EmbeddingEngine
 
 DATA_PATH = Path("src/data")
 DATA_FULLPATH = Path.joinpath(DATA_PATH, "nike_data_2022_09.csv")
@@ -17,12 +19,14 @@ class NikeDataset:
 
     def __init__(self) -> None:
         """Download and parse in Nike Dataset"""
+        self.model = EmbeddingEngine()
         if not os.path.isfile(DATA_FULLPATH):  # download if not exists
             self._download_data()
         self._df: pd.DataFrame = pd.read_csv(DATA_FULLPATH)
         self._df = self._df.drop(["index"], axis=1)
-        self._df["uniq_id"] = self._uuid_conversion(self._df["uniq_id"])
-        self._df["scraped_at"] = self._datetime_conversion(self._df["scraped_at"])
+        self._df.uniq_id = self._uuid_conversion(self._df.uniq_id)
+        self._df.scraped_at = self._datetime_conversion(self._df.scraped_at)
+        self._df["embedding"] = self._generate_embeddings(self._df.description)
 
     @staticmethod
     def _download_data() -> None:
@@ -45,4 +49,9 @@ class NikeDataset:
     @staticmethod
     def _datetime_conversion(df: pd.Series) -> pd.Series:
         """convert a pandas series from object to uuids"""
-        return pd.to_datetime(df)
+        return pd.to_datetime(df, dayfirst=True)
+
+    def _generate_embeddings(self, df: pd.Series) -> List[List[float]]:
+        """generate embeddings"""
+        embeddings = self.model.get_embedding(df)
+        return embeddings.tolist()

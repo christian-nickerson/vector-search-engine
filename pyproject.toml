@@ -5,7 +5,16 @@ description = "A vector search engine for searching for Nike products using natu
 authors = ["christian nickerson <christian_nickerson@hotmail.com>"]
 readme = "README.md"
 
+[[tool.poetry.source]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cpu"
+default = false
+secondary = true
+
 [tool.poetry.dependencies]
+python = "3.11"
+
+[tool.poetry.group.api.dependencies]
 python = "3.11"
 kaggle = "1.5.13"
 pandas = "2.0.2"
@@ -14,6 +23,9 @@ sqlalchemy = "2.0.17"
 fastapi = "0.98.0"
 pydantic = "1.10.10"
 psycopg2-binary = "2.9.6"
+sentence-transformers = "2.2.2"
+torch = {version = "2.0.1", source = "pytorch", platform = "linux"}
+pgvector = "0.1.8"
 
 
 [tool.poetry.group.dev.dependencies]

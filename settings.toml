@@ -1,13 +1,13 @@
-[development.data]
+[default.data]
 dataset_name = "thedevastator/nike-usa-products-prices-descriptions-and-custom"
+
+[default.embeddings]
+model = "multi-qa-MiniLM-L6-cos-v1"
 
 [development.db]
 host = "localhost"
 port = 5432
 database = "vector-db"
-
-[compose.data]
-dataset_name = "thedevastator/nike-usa-products-prices-descriptions-and-custom"
 
 [compose.db]
 host = "vector-db"
