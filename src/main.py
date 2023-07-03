@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import select, text
 from sqlalchemy.orm import Session
 
 from config import settings
@@ -29,10 +29,17 @@ if __name__ == "__main__":
     # import_product(nd, conn)
 
     query_embedding = embed.get_embedding(SEARCH_TEXT)
-    session = Session(bind=conn)
-    results = session.scalars(select(Products).order_by(Products.embedding.l2_distance(query_embedding)).limit(5))
-    for item in results.all():
+    statement = (
+        select(Products, Products.embedding.l2_distance(query_embedding))
+        .order_by(Products.embedding.l2_distance(query_embedding))
+        .limit(5)
+    )
+    with Session(bind=conn) as session:
+        results = session.execute(statement).all()
+
+    for item, distance in results:
         print(f"TITLE: {item.name}")
         print(f"SUBTITLE: {item.sub_title}")
         print(f"DESCRIPTION: {item.description}")
+        print(f"DISTANCE: {distance}")
         print("--------------------------------")
