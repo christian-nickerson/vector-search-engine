@@ -21,4 +21,3 @@ def import_product(dataset: NikeDataset, engine: Engine) -> None:
     records = _build_records(dataset)
     with Session(bind=engine) as session, session.begin():
         session.add_all(records)
-        session.flush()
