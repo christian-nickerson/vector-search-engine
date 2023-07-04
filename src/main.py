@@ -2,7 +2,7 @@ from config import settings
 from data import NikeDataset
 from database.engine import connect
 from database.ingress import import_product
-from database.query import similarity_search
+from database.query import Distance, similarity_search
 from database.tables import Products, create_tables
 from embeddings.engine import EmbeddingEngine
 

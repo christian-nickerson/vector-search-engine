@@ -19,7 +19,6 @@ def _build_records(dataset: NikeDataset) -> List[Products]:
 def import_product(dataset: NikeDataset, engine: Engine) -> None:
     """Batch import product data"""
     records = _build_records(dataset)
-    session = Session(bind=engine)
-    session.add_all(records)
-    session.flush()
-    session.commit()
+    with Session(bind=engine) as session, session.begin():
+        session.add_all(records)
+        session.flush()
