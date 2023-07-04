@@ -11,8 +11,6 @@ index = 1
 SEARCH_TEXT = "a soccer jacket"
 
 if __name__ == "__main__":
-    import numpy as np
-
     nd = NikeDataset()
     embed = EmbeddingEngine()
 
