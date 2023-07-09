@@ -1,7 +1,7 @@
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
-from config import settings
+from src.config import settings
 
 
 class EmbeddingEngine:
@@ -11,6 +11,6 @@ class EmbeddingEngine:
     def __init__(self) -> None:
         self.model = SentenceTransformer(settings.embeddings.model)
 
-    def get_embedding(self, text: str) -> np.ndarray:
+    def embed(self, text: str) -> np.ndarray:
         """Create embeddings from text"""
         return self.model.encode(text)

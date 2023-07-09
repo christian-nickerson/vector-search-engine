@@ -14,12 +14,16 @@ kaggle = "1.5.13"
 pandas = "2.0.2"
 dynaconf = "3.1.12"
 sqlalchemy = "2.0.17"
-fastapi = "0.98.0"
 pydantic = "1.10.10"
 psycopg2-binary = "2.9.6"
-sentence-transformers = "2.2.2"
-torch = "2.0.1"
 pgvector = "0.1.8"
+sentence-transformers = "2.2.2"
+fastapi = "0.98.0"
+uvicorn = "0.22.0"
+strawberry-graphql = {extras = ["fastapi"], version = "0.193.0"}
+
+[tool.poetry.group.gpu.dependencies]
+torch = "2.0.1"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -28,6 +32,11 @@ black = "23.3.0"
 isort = "5.12.0"
 mypy = "1.1.1"
 pre-commit = "3.2.1"
+
+
+[tool.poetry.group.streamlit.dependencies]
+jinja2 = "^3.1.2"
+httpx = "^0.24.1"
 
 [build-system]
 requires = ["poetry-core"]
@@ -38,3 +47,4 @@ profile="black"
 
 [tool.mypy]
 python_version = "3.11"
+mypy_path = ["^/src", "^/tests"]

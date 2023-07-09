@@ -1,0 +1,18 @@
+query similairtySearch {
+  search(text: "{{ text }}") {
+    url
+    name
+    subTitle
+    brand
+    model
+    color
+    price
+    currency
+    availability
+    description
+    avgRating
+    reviewCount
+    images
+    availableSizes
+  }
+}

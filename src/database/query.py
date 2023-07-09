@@ -1,13 +1,18 @@
 from enum import StrEnum
-from typing import List, Tuple
+from typing import List
 
 import numpy as np
-from sqlalchemy import Engine, Select, select
+import strawberry
+from sqlalchemy import Select, select
 from sqlalchemy.orm import Session
 
-from .tables import Products
+from src.config import settings
+
+from .engine import connect
+from .models import Products
 
 
+@strawberry.enum
 class Distance(StrEnum):
 
     """distance metrics"""
@@ -17,61 +22,62 @@ class Distance(StrEnum):
     cosine: str = "Cosine"
 
 
-def _l2_distance_statement(query_embedding: np.ndarray) -> Select:
-    """Create query statement with the L2 distance metric
+class SimilaritySearch:
 
-    :param query_embedding: query embedding to search
-    :return: Select query object
-    """
-    return (
-        select(Products, Products.embedding.l2_distance(query_embedding).label("distance"))
-        .order_by(Products.embedding.l2_distance(query_embedding))
-        .limit(5)
-    )
+    """Similarity search engine"""
 
+    def __init__(self) -> None:
+        self._register_statements()
+        self.engine = connect(
+            host=settings.db.host,
+            port=settings.db.port,
+            username=settings.db.username,
+            password=settings.db.password,
+            database=settings.db.database,
+        )
 
-def _inner_product_distance_statement(query_embedding: np.ndarray) -> Select:
-    """Create query statement with the inner product distance metric
+    @staticmethod
+    def _l2_distance_statement(query_embedding: np.ndarray) -> Select:
+        """Create query statement with the L2 distance metric
 
-    :param query_embedding: query embedding to search
-    :return: Select query object
-    """
-    return (
-        select(Products, Products.embedding.max_inner_product(query_embedding).label("distance"))
-        .order_by(Products.embedding.max_inner_product(query_embedding))
-        .limit(5)
-    )
+        :param query_embedding: query embedding to search
+        :return: Select query object
+        """
+        return select(Products).order_by(Products.embedding.l2_distance(query_embedding)).limit(5)
 
+    @staticmethod
+    def _inner_product_distance_statement(query_embedding: np.ndarray) -> Select:
+        """Create query statement with the inner product distance metric
 
-def _cosine_distance_statement(query_embedding: np.ndarray) -> Select:
-    """Create query statement with the cosine distance metric
+        :param query_embedding: query embedding to search
+        :return: Select query object
+        """
+        return select(Products).order_by(Products.embedding.max_inner_product(query_embedding)).limit(5)
 
-    :param query_embedding: query embedding to search
-    :return: Select query object
-    """
-    return (
-        select(Products, Products.embedding.cosine_distance(query_embedding).label("distance"))
-        .order_by(Products.embedding.cosine_distance(query_embedding))
-        .limit(5)
-    )
+    @staticmethod
+    def _cosine_distance_statement(query_embedding: np.ndarray) -> Select:
+        """Create query statement with the cosine distance metric
 
+        :param query_embedding: query embedding to search
+        :return: Select query object
+        """
+        return select(Products).order_by(Products.embedding.cosine_distance(query_embedding)).limit(5)
 
-QUERY_STATEMENT = {
-    Distance.l2: _l2_distance_statement,
-    Distance.inner_product: _inner_product_distance_statement,
-    Distance.cosine: _cosine_distance_statement,
-}
+    def _register_statements(self) -> None:
+        """register different distance search statements"""
+        self.query_statements = {
+            Distance.l2: self._l2_distance_statement,
+            Distance.inner_product: self._inner_product_distance_statement,
+            Distance.cosine: self._cosine_distance_statement,
+        }
 
+    def query(self, query_embedding: np.ndarray, distance_metric: Distance) -> List[Products]:
+        """search database for similar products
 
-def similarity_search(
-    engine: Engine, query_embedding: np.ndarray, distance_metric: Distance = Distance.l2
-) -> List[Tuple[Products, float]]:
-    """search database for similar products
-
-    :param engine: SQLAlchemy engine
-    :param query_embedding: Query embedding to search database with
-    :return: Scalar result from database
-    """
-    statement = QUERY_STATEMENT[distance_metric](query_embedding)
-    with Session(engine) as session:
-        return session.execute(statement).all()
+        :param query_embedding: Query embedding to search database with
+        :return: Scalar result from database
+        """
+        statement = self.query_statements[distance_metric](query_embedding)
+        with Session(self.engine) as session:
+            results = session.execute(statement).all()
+            return [row[0] for row in results]

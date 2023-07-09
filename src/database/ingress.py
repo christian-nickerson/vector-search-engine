@@ -1,23 +1,24 @@
-from typing import List
-
-from sqlalchemy import Engine
 from sqlalchemy.orm import Session
 
-from data import NikeDataset
-
-from .tables import Products
-
-
-def _build_records(dataset: NikeDataset) -> List[Products]:
-    """Build list of records to insert into database"""
-    records = []
-    for _, row in dataset.df.iterrows():
-        records.append(Products(**row))
-    return records
+from src.config import settings
+from src.database.engine import connect
+from src.database.models import Products
 
 
-def import_product(dataset: NikeDataset, engine: Engine) -> None:
-    """Batch import product data"""
-    records = _build_records(dataset)
-    with Session(bind=engine) as session, session.begin():
-        session.add_all(records)
+class ImportClient:
+
+    """Client for importing data to vector db"""
+
+    def __init__(self) -> None:
+        self.engine = connect(
+            host=settings.db.host,
+            port=settings.db.port,
+            username=settings.db.username,
+            password=settings.db.password,
+            database=settings.db.database,
+        )
+
+    def product(self, product: Products) -> None:
+        """Import a product record"""
+        with Session(bind=self.engine, expire_on_commit=False) as session, session.begin():
+            session.merge(product)

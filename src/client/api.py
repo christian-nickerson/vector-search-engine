@@ -49,17 +49,16 @@ class APIClient:
             tasks = [client.post("/graphql", json={"query": body}) for body in query_list]
             response_list = await asyncio.gather(*tasks)
         for response in response_list:
-            print(response.json())
-            if response.status_code != 200:
-                raise response.raise_for_status()
+            if "errors" in response.json():
+                raise Exception(response.json())
         return response_list
 
-    def build_db(self) -> None:
+    def build_db(self) -> List[Response]:
         """Build database records"""
         template = self._get_product_template()
         data = self._get_records()
         records = [template.render(**record) for record in data]
-        asyncio.run(self.async_graphql_post(records))
+        return asyncio.run(self.async_graphql_post(records))
 
     def search_query(self, text: str) -> Response:
         """search query request

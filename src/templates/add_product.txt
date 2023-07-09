@@ -1,0 +1,31 @@
+mutation addProduct {
+  addProduct(
+    data: {
+      uniqId: "{{ uniq_id }}",
+      url: "{{ url }}",
+      name: "{{ name }}",
+      subTitle: "{{ sub_title }}",
+      brand: "{{ brand }}",
+      model: {{ model }},
+      color: "{{ color }}",
+      price: {{ price }},
+      currency: "{{ currency }}",
+      availability: "{{ availability }}",
+      description: "{{ description }}",
+      {% if avg_rating %}
+      avgRating: {{ avg_rating }},
+      {% endif %}
+      {% if review_count %}
+      reviewCount: {{ review_count }},
+      {% endif %}
+      images: "{{ images }}",
+      {% if available_sizes %}
+      availableSizes: "{{ available_sizes }}",
+      {% endif %}
+      scrapedAt: "{{ scraped_at }}",
+    }
+  ) {
+    uniqId
+    name
+  }
+}

@@ -4,12 +4,23 @@ dataset_name = "thedevastator/nike-usa-products-prices-descriptions-and-custom"
 [default.embeddings]
 model = "multi-qa-MiniLM-L6-cos-v1"
 
+[default.templates]
+dir = "src/templates"
+add_product = "add_product.txt"
+similarity_search = "similarity_search.txt"
+
 [development.db]
 host = "localhost"
 port = 5432
 database = "vector-db"
 
+[development.api]
+url = "http://127.0.0.1:8000"
+
 [compose.db]
 host = "vector-db"
 port = 5432
 database = "vector-db"
+
+[compose.api]
+url = "client-api"

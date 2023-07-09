@@ -1,5 +1,6 @@
 from datetime import datetime
 from decimal import Decimal
+from typing import Optional
 from uuid import UUID
 
 from pgvector.sqlalchemy import Vector
@@ -18,7 +19,7 @@ class Products(Base):
     __tablename__: str = "products"
 
     uniq_id: Mapped[UUID] = mapped_column(primary_key=True)
-    embedding: Mapped[Vector] = mapped_column(Vector, index=True)
+    embedding: Mapped[Optional[Vector]] = mapped_column(Vector, index=True)
     url: Mapped[str]
     name: Mapped[str]
     sub_title: Mapped[str]
@@ -29,11 +30,10 @@ class Products(Base):
     currency: Mapped[str]
     availability: Mapped[str]
     description: Mapped[str]
-    raw_description: Mapped[str]
-    avg_rating: Mapped[float]
-    review_count: Mapped[float]
+    avg_rating: Mapped[Optional[float]]
+    review_count: Mapped[Optional[float]]
     images: Mapped[str]
-    available_sizes: Mapped[str]
+    available_sizes: Mapped[Optional[str]]
     scraped_at: Mapped[datetime]
 
 
