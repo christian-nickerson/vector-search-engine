@@ -1,10 +1,10 @@
-from src.client.api import APIClient
+from client.api import APIClient
 
 SEARCH_TEXT = "a soccer jacket"
 
 if __name__ == "__main__":
     client = APIClient()
-    client.build_db()
+    # client.build_db()
     results = client.search_query(SEARCH_TEXT)
     print(results)
 

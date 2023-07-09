@@ -16,11 +16,13 @@ database = "vector-db"
 
 [development.api]
 url = "http://127.0.0.1:8000"
+timeout = 30
 
 [compose.db]
-host = "vector-db"
+host = "db"
 port = 5432
 database = "vector-db"
 
 [compose.api]
-url = "client-api"
+url = "api"
+timeout = 30

@@ -1,1 +1,1 @@
-from .data import NikeDataset
+from data.data import NikeDataset

@@ -5,8 +5,8 @@ from httpx import AsyncClient, Client, Response
 from jinja2 import Environment, FileSystemLoader, Template
 from pandas import isna
 
-from src.config import settings
-from src.data import NikeDataset
+from config import settings
+from data import NikeDataset
 
 
 class APIClient:
@@ -45,7 +45,7 @@ class APIClient:
         :param query_list: _description_
         :return: response
         """
-        async with AsyncClient(base_url=settings.api.url) as client:
+        async with AsyncClient(base_url=settings.api.url, timeout=settings.api.timeout) as client:
             tasks = [client.post("/graphql", json={"query": body}) for body in query_list]
             response_list = await asyncio.gather(*tasks)
         for response in response_list:

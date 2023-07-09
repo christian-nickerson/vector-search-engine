@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
 
-  vector-db:
+  db:
     build:
       context: .
       dockerfile: src/Dockerfile.vector
@@ -22,4 +22,4 @@ services:
     environment:
       - ENV_FOR_DYNACONF=compose
     depends_on:
-      - vector-db
+      - db

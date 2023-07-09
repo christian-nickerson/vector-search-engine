@@ -5,8 +5,7 @@ from uuid import UUID
 import kaggle
 import pandas as pd
 
-from src.config import settings
-from src.embeddings.engine import EmbeddingEngine
+from config import settings
 
 DATA_PATH = Path("src/data")
 DATA_FULLPATH = Path.joinpath(DATA_PATH, "nike_data_2022_09.csv")
@@ -18,7 +17,6 @@ class NikeDataset:
 
     def __init__(self) -> None:
         """Download and parse in Nike Dataset"""
-        self.model = EmbeddingEngine()
         if not os.path.isfile(DATA_FULLPATH):  # download if not exists
             self._download_data()
         self._df: pd.DataFrame = pd.read_csv(DATA_FULLPATH)
