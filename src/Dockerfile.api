@@ -1,0 +1,18 @@
+FROM python:3.11.0-slim
+
+WORKDIR /root
+
+RUN pip install poetry
+
+COPY poetry.lock .
+COPY pyproject.toml .
+
+RUN poetry config virtualenvs.create false
+RUN poetry install --no-dev --no-root --only api
+
+# COPY src/config src/database src/embeddings src/graphql src/app.py src/__init__.py /root/src/
+COPY src/ /root/src/
+COPY settings.toml .
+COPY .secrets.toml .
+
+CMD uvicorn src.app:app

@@ -1,6 +1,7 @@
 version: "3.7"
 
 services:
+
   vector-db:
     build:
       context: .
@@ -11,3 +12,14 @@ services:
       - POSTGRES_DB=vector-db
       - POSTGRES_USER=vector-db
       - POSTGRES_PASSWORD=vector-db
+
+  api:
+    build:
+      context: .
+      dockerfile: src/Dockerfile.api
+    ports:
+      - 8000:8000
+    environment:
+      - ENV_FOR_DYNACONF=compose
+    depends_on:
+      - vector-db
