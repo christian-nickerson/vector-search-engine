@@ -13,6 +13,7 @@ RUN poetry install --no-dev --no-root --only streamlit
 COPY src/config ./src/config
 COPY src/data ./src/data
 COPY src/client ./src/client
+COPY src/templates ./src/templates
 COPY src/search.py ./src/
 
 COPY settings.toml .
