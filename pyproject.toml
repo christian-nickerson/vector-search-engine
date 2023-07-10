@@ -45,3 +45,4 @@ profile="black"
 [tool.mypy]
 python_version = "3.11"
 mypy_path = ["^/src", "^/tests"]
+namespace_packages = false

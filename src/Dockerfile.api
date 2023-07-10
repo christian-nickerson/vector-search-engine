@@ -13,8 +13,12 @@ COPY pyproject.toml .
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-dev --no-root --only api
 
-# COPY src/config src/database src/embeddings src/graphql src/app.py src/__init__.py /root/src/
-COPY src/ /root/src/
+COPY src/config ./src/config
+COPY src/database ./src/database
+COPY src/embeddings ./src/embeddings
+COPY src/graphql ./src/graphql
+COPY src/app.py ./src/
+
 COPY settings.toml .
 COPY .secrets.toml .
 

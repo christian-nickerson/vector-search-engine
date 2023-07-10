@@ -10,8 +10,11 @@ COPY pyproject.toml .
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-dev --no-root --only streamlit
 
-# COPY src/config src/database src/embeddings src/graphql src/app.py src/__init__.py /root/src/
-COPY src/ /root/src/
+COPY src/config ./src/config
+COPY src/data ./src/data
+COPY src/client ./src/client
+COPY src/search.py ./src/
+
 COPY settings.toml .
 COPY .secrets.toml .
 
