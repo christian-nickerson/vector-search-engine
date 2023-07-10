@@ -32,8 +32,6 @@ services:
   frontend:
     build:
       context: .
-      secrets:
-        - kaggle
       dockerfile: src/Dockerfile.frontend
     ports:
       - 8501:8501
