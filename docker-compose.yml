@@ -26,6 +26,8 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+    depends_on:
+      - db
 
   frontend:
     build:
@@ -40,9 +42,3 @@ services:
     restart: on-failure
     depends_on:
       - api
-    links:
-      - api
-
-secrets:
-  kaggle:
-    file: ~/.kaggle/kaggle.json
