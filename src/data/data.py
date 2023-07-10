@@ -24,7 +24,7 @@ class NikeDataset:
 
     @staticmethod
     def _download_data() -> None:
-        """download data from Kaggle. Must have `.kaggle/kaggle.json` to authenticate"""
+        """download data from Kaggle. Must have secrets in dynaconf to authenticate"""
         try:
             kaggle.api.authenticate()
             kaggle.api.dataset_download_files(settings.data.dataset_name, path=DATA_PATH, unzip=True)

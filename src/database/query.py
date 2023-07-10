@@ -1,4 +1,4 @@
-from enum import StrEnum
+from enum import Enum
 from typing import List
 
 import numpy as np
@@ -13,7 +13,7 @@ from .models import Products
 
 
 @strawberry.enum
-class Distance(StrEnum):
+class Distance(Enum):
 
     """distance metrics"""
 

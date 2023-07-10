@@ -5,7 +5,7 @@ services:
   db:
     build:
       context: .
-      dockerfile: src/Dockerfile.vector
+      dockerfile: src/Dockerfile.db
     ports:
       - 5432:5432
     environment:
@@ -21,5 +21,28 @@ services:
       - 8000:8000
     environment:
       - ENV_FOR_DYNACONF=compose
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://0.0.0.0:8000" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: .
+      secrets:
+        - kaggle
+      dockerfile: src/Dockerfile.frontend
+    ports:
+      - 8501:8501
+    environment:
+      - ENV_FOR_DYNACONF=compose
+    restart: on-failure
     depends_on:
-      - db
+      - api
+    links:
+      - api
+
+secrets:
+  kaggle:
+    file: ~/.kaggle/kaggle.json

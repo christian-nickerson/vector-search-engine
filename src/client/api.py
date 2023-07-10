@@ -6,7 +6,6 @@ from jinja2 import Environment, FileSystemLoader, Template
 from pandas import isna
 
 from config import settings
-from data import NikeDataset
 
 
 class APIClient:
@@ -32,6 +31,8 @@ class APIClient:
 
     def _get_records(self) -> List[dict]:
         """Get records to populate database with"""
+        from data import NikeDataset
+
         data = []
         df_dict = NikeDataset().df.to_dict("records")
         for dict in df_dict:
