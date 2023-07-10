@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.3.0
+    rev: v4.4.0
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
@@ -10,6 +10,7 @@ repos:
       - id: check-json
       - id: check-toml
       - id: name-tests-test
+        args: [--pytest-test-first]
       - id: pretty-format-json
       - id: sort-simple-yaml
       - id: check-ast
