@@ -17,6 +17,7 @@ isort = "5.12.0"
 mypy = "1.1.1"
 pre-commit = "3.2.1"
 pytest = "7.4.0"
+pytest-cov = "4.1.0"
 
 [tool.poetry.group.api.dependencies]
 pandas = "2.0.2"
@@ -46,3 +47,10 @@ profile="black"
 python_version = "3.11"
 mypy_path = ["^/src", "^/tests"]
 namespace_packages = false
+
+[tool.black]
+line_length = 119
+
+[tool.pytest.ini_options]
+testpaths = "tests"
+pythonpath = ["src"]
