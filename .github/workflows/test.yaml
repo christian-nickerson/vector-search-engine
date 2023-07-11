@@ -5,6 +5,7 @@ on: [push]
 jobs:
   tests:
     runs-on: ubuntu-latest
+    environment: testing
     steps:
       - uses: actions/checkout@v3
 
@@ -28,11 +29,11 @@ jobs:
           isort src/ -c
 
       - name: Test with pytest
-        env:
-          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
-          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
         run: |
           python -m pytest tests --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+        env:
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_USERNAME }}
 
       - name: Upload pytest test results
         uses: actions/upload-artifact@v3
