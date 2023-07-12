@@ -40,8 +40,8 @@ jobs:
           dynaconf_merge = true
 
           [default.kaggle]
-          username = "$KAGGLE_USERNAME"
-          key = "$KAGGLE_KEY"
+          username = "${{ secrets.KAGGLE_USERNAME }}"
+          key = "${{ secrets.KAGGLE_USERNAME }}"
 
           [default.db]
           username = "vector-db"
