@@ -1,6 +1,9 @@
-name: Pytest testing
+name: Testing
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   tests:
@@ -30,6 +33,8 @@ jobs:
 
       - name: Test with pytest
         run: |
+          printenv KAGGLE_USERNAME
+          printenv KAGGLE_KEY
           python -m pytest tests --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
         env:
           KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}

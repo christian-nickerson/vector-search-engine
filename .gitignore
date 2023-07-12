@@ -11,3 +11,7 @@
 
 # Ignore dynaconf secret files
 *.secrets.*
+
+# testing files
+*.coverage
+*junit/
