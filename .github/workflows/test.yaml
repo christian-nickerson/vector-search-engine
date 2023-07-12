@@ -48,6 +48,7 @@ jobs:
           password = "vector-db"
 
           EOF
+          cat .secrets.toml
 
       - name: Test with pytest
         run: |
