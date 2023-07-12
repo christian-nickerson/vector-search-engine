@@ -46,6 +46,7 @@ jobs:
           [default.db]
           username = "vector-db"
           password = "vector-db"
+
           EOF
 
       - name: Test with pytest
