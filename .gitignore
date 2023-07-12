@@ -13,5 +13,5 @@
 *.secrets.*
 
 # testing files
-*.coverage
+*coverage*
 *junit/
