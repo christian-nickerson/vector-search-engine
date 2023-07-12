@@ -32,16 +32,13 @@ jobs:
           isort src/ -c
 
       - name: Create secrets file
-        env:
-          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
-          KAGGLE_KEY: ${{ secrets.KAGGLE_USERNAME }}
         run: |
           cat <<EOF > .secrets.toml
           dynaconf_merge = true
 
           [default.kaggle]
           username = "${{ secrets.KAGGLE_USERNAME }}"
-          key = "${{ secrets.KAGGLE_USERNAME }}"
+          key = "${{ secrets.KAGGLE_KEY }}"
 
           [default.db]
           username = "vector-db"
