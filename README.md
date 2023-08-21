@@ -4,7 +4,6 @@ A vector search engine project that uses NLP to query Nike product descriptions 
 
 '''mermaid
 flowchart LR
-
-A(Streamlit) --> B(GraphQL API)
-B --> C(Vector DB)
+    A(Streamlit) --> B(GraphQL API)
+    B --> C(Vector DB)
 '''
